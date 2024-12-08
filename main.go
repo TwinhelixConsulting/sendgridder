@@ -15,6 +15,7 @@ func main() {
 	recipient := os.Getenv("RECIPIENT")
 	apiKey := os.Getenv("API_KEY")
 	hasHtml := os.Getenv("HAS_HTML")
+	cc := os.Getenv("CC")
 
 	if apiKey == "" {
 		log.Fatal("API_KEY environment variable is required")
@@ -35,7 +36,12 @@ func main() {
 		}
 		message = mail.NewSingleEmail(from, subject, to, string(body), string(html))
 	}
-
+	if cc != "" {
+		personalization := mail.NewPersonalization()
+		personalization.AddTos(mail.NewEmail("", recipient))
+		personalization.AddCCs(mail.NewEmail("", cc))
+		message.AddPersonalizations(personalization)
+	}
 	client := sendgrid.NewSendClient(apiKey)
 
 	response, err := client.Send(message)
