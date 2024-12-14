@@ -1,4 +1,4 @@
-module twinhelix.co.uk/mailgunner
+module twinhelix.co.uk/sendgridder
 
 go 1.23.1
 
